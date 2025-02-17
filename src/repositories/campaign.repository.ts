@@ -1,0 +1,52 @@
+import { prisma } from "../utils/prismaClient";
+
+interface RepoParams {
+  page: number;
+  limit: number;
+  type?: string;
+  category?: string;
+  keyword?: string;
+}
+
+export async function getCampaignsRepository(params: RepoParams) {
+  const { page, limit, type, category, keyword } = params;
+  const skip = (page - 1) * limit;
+  const whereClause: any = {};
+
+  if (type) {
+    whereClause.type = type;
+  }
+
+  if (category) {
+    whereClause.category = category;
+  }
+
+  if (keyword) {
+    whereClause.OR = [
+      { name: { contains: keyword } },
+      { description: { contains: keyword } },
+    ];
+  }
+
+  const [campaigns, totalCount] = await Promise.all([
+    prisma.campaign.findMany({
+      where: whereClause,
+      skip,
+      take: limit,
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.campaign.count({
+      where: whereClause,
+    }),
+  ]);
+
+  return {
+    data: campaigns,
+    meta: {
+      page,
+      limit,
+      totalItems: totalCount,
+      totalPages: Math.ceil(totalCount / limit),
+    },
+  };
+}
