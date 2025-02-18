@@ -1,31 +1,17 @@
-import { getCampaignsRepository } from "../repositories/campaign.repository";
 import { Status } from "@prisma/client";
+
+import { getCampaignsRepository } from "../repositories/campaign.repository";
+import { Categories } from "../models/categories";
 
 interface GetCampaignsParams {
   page: number;
   limit: number;
-  category?: string;
+  category?: Categories;
   keyword?: string;
   status?: Status;
 }
 
-const ALLOWED_CATEGORIES = [
-  "兒少照護",
-  "動物保護",
-  "老人照護",
-  "身心障礙服務",
-  "特殊醫病",
-  "婦女關懷",
-  "教育議題提倡",
-  "環境保護",
-  "多元族群",
-  "媒體傳播",
-  "公共議題",
-  "文教藝術",
-  "社區發展",
-  "弱勢扶貧",
-  "國際救援",
-];
+const ALLOWED_CATEGORIES = Object.values(Categories);
 
 export async function getCampaignsService(params: GetCampaignsParams) {
   let { page, limit, category, keyword, status } = params;

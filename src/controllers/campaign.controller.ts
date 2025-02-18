@@ -2,12 +2,13 @@ import { Request, Response } from "express";
 import { Status } from "@prisma/client";
 
 import { getCampaignsService } from "../services/campaign.service";
+import { Categories } from "../models/categories";
 
 export async function getCampaignsController(req: Request, res: Response) {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
-    const category = req.query.category as string;
+    const category = req.query.category as Categories;
     const keyword = req.query.keyword as string;
     const status = req.query.status as Status;
 

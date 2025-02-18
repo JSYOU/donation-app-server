@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { Status } from "@prisma/client";
 
-import { getProjectService } from "../services/project.service";
+import { getProductsService } from "../services/product.service";
 import { Categories } from "../models/categories";
 
-export async function getProjectController(req: Request, res: Response) {
+export async function getProductsController(req: Request, res: Response) {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
@@ -12,7 +12,7 @@ export async function getProjectController(req: Request, res: Response) {
     const keyword = req.query.keyword as string;
     const status = req.query.status as Status;
 
-    const result = await getProjectService({
+    const result = await getProductsService({
       page,
       limit,
       category,
@@ -22,7 +22,7 @@ export async function getProjectController(req: Request, res: Response) {
 
     res.status(200).json(result);
   } catch (error) {
-    console.error("getProjectController Error:", error);
+    console.error("getProductsController Error:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 }

@@ -1,9 +1,9 @@
 import { Status } from "@prisma/client";
 
-import { getProjectRepository } from "../repositories/project.repository";
+import { getProductsRepository } from "../repositories/product.repository";
 import { Categories } from "../models/categories";
 
-interface GetProjectsParams {
+interface GetProductsParams {
   page: number;
   limit: number;
   category?: Categories;
@@ -13,7 +13,7 @@ interface GetProjectsParams {
 
 const ALLOWED_CATEGORIES = Object.values(Categories);
 
-export async function getProjectService(params: GetProjectsParams) {
+export async function getProductsService(params: GetProductsParams) {
   let { page, limit, category, keyword, status } = params;
 
   if (page < 1) {
@@ -38,7 +38,7 @@ export async function getProjectService(params: GetProjectsParams) {
     );
   }
 
-  return await getProjectRepository({
+  return getProductsRepository({
     page,
     limit,
     category,
