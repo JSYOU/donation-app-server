@@ -1,4 +1,4 @@
-import { PrismaClient, CampaignType, Status } from "@prisma/client";
+import { PrismaClient, Status } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 
 const prisma = new PrismaClient();
@@ -29,11 +29,8 @@ async function main() {
 
   const statuses: Status[] = ["DRAFT", "ACTIVE", "INACTIVE", "COMPLETED"];
 
-  const types: CampaignType[] = ["CHARITY", "PRODUCT"];
-
   for (let i = 0; i < 300; i++) {
     const randomCategoryList = pickRandomCategories(categories, 3);
-    const randomType = types[Math.floor(Math.random() * types.length)];
     const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
 
     await prisma.campaign.create({
@@ -42,7 +39,6 @@ async function main() {
         description: faker.lorem.sentence(),
         logoUrl: "http://localhost:8080/test_logo.jpeg",
         category: randomCategoryList,
-        type: randomType,
         status: randomStatus,
       },
     });

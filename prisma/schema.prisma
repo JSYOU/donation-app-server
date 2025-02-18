@@ -7,17 +7,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// 狀態列舉：適用於 CHARITY, PRODUCT, 以及新的 PROJECT
 enum Status {
   DRAFT
   ACTIVE
   INACTIVE
   COMPLETED
-}
-
-enum CampaignType {
-  CHARITY
-  PRODUCT
 }
 
 model Campaign {
@@ -26,7 +20,6 @@ model Campaign {
   description String?
   logoUrl     String?
   category    String[]     @default([])
-  type        CampaignType
   status      Status       @default(ACTIVE)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -38,6 +31,18 @@ model Project {
   name        String
   category    String[]   @default([])
   description String?
+  status      Status     @default(ACTIVE)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Product {
+  id          String     @id @default(uuid()) @db.Uuid
+  name        String
+  description String?
+  imageUrl      String?
+  price       Int
+  category    String[]   @default([])
   status      Status     @default(ACTIVE)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt

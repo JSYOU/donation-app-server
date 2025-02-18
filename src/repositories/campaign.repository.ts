@@ -3,20 +3,15 @@ import { prisma } from "../utils/prismaClient";
 interface RepoParams {
   page: number;
   limit: number;
-  type?: string;
   category?: string;
   keyword?: string;
   status?: string;
 }
 
 export async function getCampaignsRepository(params: RepoParams) {
-  const { page, limit, type, category, keyword, status } = params;
+  const { page, limit, category, keyword, status } = params;
   const skip = (page - 1) * limit;
   const whereClause: any = {};
-
-  if (type) {
-    whereClause.type = type;
-  }
 
   if (category) {
     whereClause.category = {
