@@ -1,5 +1,5 @@
 import { getCampaignsRepository } from "../repositories/campaign.repository";
-import { CampaignType } from "@prisma/client";
+import { CampaignType, Status } from "@prisma/client";
 
 interface GetCampaignsParams {
   page: number;
@@ -7,6 +7,7 @@ interface GetCampaignsParams {
   type?: CampaignType;
   category?: string;
   keyword?: string;
+  status?: Status;
 }
 
 const ALLOWED_CATEGORIES = [
@@ -28,7 +29,7 @@ const ALLOWED_CATEGORIES = [
 ];
 
 export async function getCampaignsService(params: GetCampaignsParams) {
-  let { page, limit, type, category, keyword } = params;
+  let { page, limit, type, category, keyword, status } = params;
 
   if (page < 1) {
     page = 1;
@@ -44,6 +45,10 @@ export async function getCampaignsService(params: GetCampaignsParams) {
     throw new Error(`Invalid type: ${type}`);
   }
 
+  if (status && !Object.values(Status).includes(status)) {
+    throw new Error(`Invalid status: ${status}`);
+  }
+
   if (category && !ALLOWED_CATEGORIES.includes(category)) {
     throw new Error(
       `Invalid category: ${category}. Must be one of: ${ALLOWED_CATEGORIES.join(
@@ -52,5 +57,12 @@ export async function getCampaignsService(params: GetCampaignsParams) {
     );
   }
 
-  return getCampaignsRepository({ page, limit, type, category, keyword });
+  return getCampaignsRepository({
+    page,
+    limit,
+    type,
+    category,
+    keyword,
+    status,
+  });
 }

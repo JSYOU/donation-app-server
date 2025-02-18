@@ -6,10 +6,11 @@ interface RepoParams {
   type?: string;
   category?: string;
   keyword?: string;
+  status?: string;
 }
 
 export async function getCampaignsRepository(params: RepoParams) {
-  const { page, limit, type, category, keyword } = params;
+  const { page, limit, type, category, keyword, status } = params;
   const skip = (page - 1) * limit;
   const whereClause: any = {};
 
@@ -28,6 +29,10 @@ export async function getCampaignsRepository(params: RepoParams) {
       { name: { contains: keyword } },
       { description: { contains: keyword } },
     ];
+  }
+
+  if (status) {
+    whereClause.status = status;
   }
 
   const [campaigns, totalCount] = await Promise.all([

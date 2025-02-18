@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CampaignType } from "@prisma/client";
+import { CampaignType, Status } from "@prisma/client";
 
 import { getCampaignsService } from "../services/campaign.service";
 
@@ -10,6 +10,7 @@ export async function getCampaignsController(req: Request, res: Response) {
     const type = parseCampaignType(req.query.type as string);
     const category = req.query.category as string;
     const keyword = req.query.keyword as string;
+    const status = req.query.status as Status;
 
     const result = await getCampaignsService({
       page,
@@ -17,6 +18,7 @@ export async function getCampaignsController(req: Request, res: Response) {
       type,
       category,
       keyword,
+      status,
     });
 
     res.status(200).json(result);
