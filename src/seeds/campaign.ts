@@ -4,6 +4,11 @@ import { CampaignType } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+function pickRandomCategories(source: string[], count: number): string[] {
+  const shuffled = [...source].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
+
 async function main() {
   const categories = [
     "兒少照護",
@@ -26,8 +31,7 @@ async function main() {
   const types: CampaignType[] = ["CHARITY", "PROJECT", "PRODUCT"];
 
   for (let i = 0; i < 300; i++) {
-    const randomCategory =
-      categories[Math.floor(Math.random() * categories.length)];
+    const randomCategoryList = pickRandomCategories(categories, 3);
     const randomType = types[Math.floor(Math.random() * types.length)];
 
     await prisma.campaign.create({
@@ -35,7 +39,7 @@ async function main() {
         name: faker.company.name(),
         description: faker.lorem.sentence(),
         logoUrl: "http://localhost:8080/test_logo.jpeg",
-        category: randomCategory,
+        category: randomCategoryList,
         type: randomType,
       },
     });

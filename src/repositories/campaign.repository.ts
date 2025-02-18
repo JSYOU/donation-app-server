@@ -18,7 +18,9 @@ export async function getCampaignsRepository(params: RepoParams) {
   }
 
   if (category) {
-    whereClause.category = category;
+    whereClause.category = {
+      has: category,
+    };
   }
 
   if (keyword) {
