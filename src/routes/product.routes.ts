@@ -6,7 +6,8 @@ export const productRouter = Router();
 /**
  * GET /api/v1/products
  * 取得商品列表
- * 支援 Query:
+ *
+ * 支援 Query 參數:
  * - page, limit
  * - category (商品分類)
  * - keyword (模糊搜尋 name/description)
