@@ -1,6 +1,8 @@
 import { PrismaClient, Status } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 
+import { Categories } from "../models/categories";
+
 const prisma = new PrismaClient();
 
 function pickRandomCategories(source: string[], count: number): string[] {
@@ -9,23 +11,7 @@ function pickRandomCategories(source: string[], count: number): string[] {
 }
 
 async function main() {
-  const categories = [
-    "兒少照護",
-    "動物保護",
-    "老人照護",
-    "身心障礙服務",
-    "特殊醫病",
-    "婦女關懷",
-    "教育議題提倡",
-    "環境保護",
-    "多元族群",
-    "媒體傳播",
-    "公共議題",
-    "文教藝術",
-    "社區發展",
-    "弱勢扶貧",
-    "國際救援",
-  ];
+  const categories = Object.values(Categories);
 
   const statuses: Status[] = ["DRAFT", "ACTIVE", "INACTIVE", "COMPLETED"];
 
